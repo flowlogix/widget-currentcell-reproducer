@@ -16,7 +16,32 @@
 
         <h1>#{testView.string}</h1>
         <h:form id="frmTest">
-            
+
+            <p:dataTable value="#{testView.birthdays}" var="birthday"
+                         widgetVar="birthdayTable" editable="true" editMode="cell">
+                <p:ajax event="cellEdit" listener="#{testView.onCellEdited}"/>
+                <p:column headerText="Birthday">
+                    <p:cellEditor>
+                        <f:facet name="output">
+                            <h:outputText value="#{birthday.dob}">
+                                <f:convertDateTime type="localDate"/>
+                            </h:outputText>
+                        </f:facet>
+                        <f:facet name="input">
+
+                            <!-- the onchange() below workaround does work correctly -->
+<!--                                          onchange="var birthdayTable = PF('birthdayTable');
+                                              var currentCell = birthdayTable.jq.find('td:has(.ui-cell-editor-input:visible)');
+                                              if (currentCell.length) birthdayTable.saveCell(currentCell)"
+                            -->
+                            <p:datePicker value="#{birthday.dob}"
+                                          onchange="var bt = PF('birthdayTable'); bt.saveCell(bt.currentCell)"
+                                          monthNavigator="true" yearNavigator="true"
+                                          showWeek="true" pattern="MMM dd, yyyy"/>
+                        </f:facet>
+                    </p:cellEditor>
+                </p:column>
+            </p:dataTable>
         </h:form>
 
     </h:body>
