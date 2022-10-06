@@ -38,7 +38,9 @@ public class TestView implements Serializable {
         birthdays.add(new Row(LocalDate.of(2020, Month.MARCH, 5)));
     }
 
-    public void onCellEdited(CellEditEvent<LocalDate> event) {
-        birthdays.get(event.getRowIndex()).setDob(event.getNewValue());
+    public void onCellEdited(CellEditEvent<?> event) {
+        if (event.getNewValue() instanceof LocalDate) {
+            birthdays.get(event.getRowIndex()).setDob((LocalDate)event.getNewValue());
+        }
     }
 }
